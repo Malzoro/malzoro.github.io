@@ -9,10 +9,10 @@
     <lastBuildDate>Fri, 22 Sep 2023 10:47:23 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Stack String Manipulation</title>
-      <link>https://blog.i-eat-sponges.ca/malware/execve_using_stack/</link>
+      <link>https://blog.i-eat-sponges.ca/exploitation/execve_using_stack/</link>
       <pubDate>Fri, 22 Sep 2023 10:47:23 -0400</pubDate>
       
-      <guid>https://blog.i-eat-sponges.ca/malware/execve_using_stack/</guid>
+      <guid>https://blog.i-eat-sponges.ca/exploitation/execve_using_stack/</guid>
       <description>So we&amp;rsquo;ve seen many of the ways we could want to manipulate strings for our shellcode, this time let&amp;rsquo;s use a previous technique to call execve(&amp;quot;/bin/sh&amp;quot;).
 Let&amp;rsquo;s write our program.
 .intel_syntax noprefix .global _start .section .text _start: mov rbx, 0x0068732f6e69622f push rbx mov rdi, rsp xor eax, eax mov al, 59 syscall We used the string /bin/sh\0 backward, we could also do the following instead.

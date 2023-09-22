@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Abouts on uint8_t* blog</title>
+    <link>https://example.org/about/</link>
+    <description>Recent content in Abouts on uint8_t* blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 22 Sep 2023 07:24:40 -0400</lastBuildDate><atom:link href="https://example.org/about/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://example.org/about/about/</link>
+      <pubDate>Fri, 22 Sep 2023 07:24:40 -0400</pubDate>
+      
+      <guid>https://example.org/about/about/</guid>
+      <description>Welcome to my Blog ! </description>
+      <content>&lt;h1 id=&#34;welcome-to-my-blog-&#34;&gt;Welcome to my Blog !&lt;/h1&gt;
+</content>
+    </item>
+    
+  </channel>
+</rss>

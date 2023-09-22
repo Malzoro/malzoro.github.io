@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Homes on uint8_t* blog</title>
+    <link>https://example.org/home/</link>
+    <description>Recent content in Homes on uint8_t* blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 22 Sep 2023 07:34:37 -0400</lastBuildDate><atom:link href="https://example.org/home/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About Me</title>
+      <link>https://example.org/home/about/</link>
+      <pubDate>Fri, 22 Sep 2023 07:34:37 -0400</pubDate>
+      
+      <guid>https://example.org/home/about/</guid>
+      <description>I go online by the name uint8_t*, but you can call me daddy.
+I&amp;rsquo;m a 22-year-old Canadian security researcher, proficient in both English and French, I am a student with an insatiable appetite for all things low-level, currently with a focus on :
+⚙️ Software Exploitation and Development: I take pleasure in exposing the vulnerabilities concealed within software, bending them to my will. (vulnerability research)
+☠️ Malware Analysis: I have descended headfirst into the ominous realm of malware, dissecting its malevolent code to unearth its sinister intentions.</description>
+      <content>&lt;p&gt;I go online by the name &lt;strong&gt;uint8_t*&lt;/strong&gt;, but you can call me daddy.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m a 22-year-old Canadian security researcher, proficient in both English and French, I am a student with an insatiable appetite for all things low-level, currently with a focus on :&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;⚙️ &lt;strong&gt;Software Exploitation and Development&lt;/strong&gt;: I take pleasure in exposing the vulnerabilities concealed within software, bending them to my will. (vulnerability research)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;☠️ &lt;strong&gt;Malware Analysis&lt;/strong&gt;: I have descended headfirst into the ominous realm of malware, dissecting its malevolent code to unearth its sinister intentions.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;⚔️ &lt;strong&gt;Red-Teaming Tactics&lt;/strong&gt;: I have honed my skills in the shadowy art of penetration testing, mastering the techniques of cyber infiltrators to guard against their malevolent schemes.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;img src=&#34;https://example.org/pepe.gif&#34;  alt=&#34;Hello Friend&#34;  class=&#34;center&#34;    /&gt;
+
+
+</content>
+    </item>
+    
+  </channel>
+</rss>

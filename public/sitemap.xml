@@ -3,12 +3,15 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://blog.i-eat-sponges.ca/exploitation/</loc>
-    <lastmod>2023-09-22T14:50:16-04:00</lastmod>
+    <lastmod>2023-09-22T15:18:52-04:00</lastmod>
   </url><url>
-    <loc>https://blog.i-eat-sponges.ca/exploitation/no_write_permissions/</loc>
-    <lastmod>2023-09-22T14:50:16-04:00</lastmod>
+    <loc>https://blog.i-eat-sponges.ca/exploitation/rop_2-35/</loc>
+    <lastmod>2023-09-22T15:18:52-04:00</lastmod>
   </url><url>
     <loc>https://blog.i-eat-sponges.ca/</loc>
+    <lastmod>2023-09-22T15:18:52-04:00</lastmod>
+  </url><url>
+    <loc>https://blog.i-eat-sponges.ca/exploitation/no_write_permissions/</loc>
     <lastmod>2023-09-22T14:50:16-04:00</lastmod>
   </url><url>
     <loc>https://blog.i-eat-sponges.ca/exploitation/execve_using_stack/</loc>

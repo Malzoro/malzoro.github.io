@@ -3,7 +3,7 @@ menu = 'main'
 title = 'About Me'
 date = 2023-09-22T07:34:37-04:00
 description = "I'm a 22 year-old French-Canadian security researcher, proficient in both English and French, I have an actual insatiable appetite for all things low-levels.\n\n Click on the arrow to learn more about me!"
-draft = true
+draft = false
 +++
 I go online by the name **uint8_t\***, but you can call me daddy.
 

@@ -2,10 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.i-eat-sponges.ca/tags/asu/</loc>
+    <lastmod>2023-09-22T15:29:34-04:00</lastmod>
+  </url><url>
     <loc>https://blog.i-eat-sponges.ca/exploitation/</loc>
     <lastmod>2023-09-22T15:29:34-04:00</lastmod>
   </url><url>
+    <loc>https://blog.i-eat-sponges.ca/tags/pwn/</loc>
+    <lastmod>2023-09-22T15:29:34-04:00</lastmod>
+  </url><url>
     <loc>https://blog.i-eat-sponges.ca/exploitation/babyrop_level15-1/</loc>
+    <lastmod>2023-09-22T15:29:34-04:00</lastmod>
+  </url><url>
+    <loc>https://blog.i-eat-sponges.ca/tags/rop/</loc>
+    <lastmod>2023-09-22T15:29:34-04:00</lastmod>
+  </url><url>
+    <loc>https://blog.i-eat-sponges.ca/tags/</loc>
     <lastmod>2023-09-22T15:29:34-04:00</lastmod>
   </url><url>
     <loc>https://blog.i-eat-sponges.ca/</loc>
@@ -45,9 +57,6 @@
     <lastmod>2023-09-21T18:46:00-04:00</lastmod>
   </url><url>
     <loc>https://blog.i-eat-sponges.ca/posts/</loc>
-    <lastmod>2023-09-21T18:46:00-04:00</lastmod>
-  </url><url>
-    <loc>https://blog.i-eat-sponges.ca/tags/</loc>
     <lastmod>2023-09-21T18:46:00-04:00</lastmod>
   </url><url>
     <loc>https://blog.i-eat-sponges.ca/categories/</loc>

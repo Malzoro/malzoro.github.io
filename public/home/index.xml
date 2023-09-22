@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Homes on uint8_t* blog</title>
-    <link>https://example.org/home/</link>
+    <link>https://blog.i-eat-sponges.ca/home/</link>
     <description>Recent content in Homes on uint8_t* blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 22 Sep 2023 07:34:37 -0400</lastBuildDate><atom:link href="https://example.org/home/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Sep 2023 07:34:37 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/home/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About Me</title>
-      <link>https://example.org/home/about/</link>
+      <link>https://blog.i-eat-sponges.ca/home/about/</link>
       <pubDate>Fri, 22 Sep 2023 07:34:37 -0400</pubDate>
       
-      <guid>https://example.org/home/about/</guid>
+      <guid>https://blog.i-eat-sponges.ca/home/about/</guid>
       <description>I go online by the name uint8_t*, but you can call me daddy.
 I&amp;rsquo;m a 22-year-old Canadian security researcher, proficient in both English and French, I am a student with an insatiable appetite for all things low-level, currently with a focus on :
 ⚙️ Software Exploitation and Development: I take pleasure in exposing the vulnerabilities concealed within software, bending them to my will. (vulnerability research)
@@ -31,7 +31,7 @@ I&amp;rsquo;m a 22-year-old Canadian security researcher, proficient in both Eng
 &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;img src=&#34;https://example.org/pepe.gif&#34;  alt=&#34;Hello Friend&#34;  class=&#34;center&#34;    /&gt;
+&lt;img src=&#34;https://blog.i-eat-sponges.ca/pepe.gif&#34;  alt=&#34;Hello Friend&#34;  class=&#34;center&#34;    /&gt;
 
 
 </content>

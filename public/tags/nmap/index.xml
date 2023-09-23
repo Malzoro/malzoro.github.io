@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nmap on uint8_t* blog</title>
+    <link>https://blog.i-eat-sponges.ca/tags/nmap/</link>
+    <description>Recent content in nmap on uint8_t* blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 23 Sep 2023 09:08:38 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/tags/nmap/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NMAP Red-Teaming Tips and Tricks</title>
+      <link>https://blog.i-eat-sponges.ca/red-teaming/nmap_tricks/</link>
+      <pubDate>Sat, 23 Sep 2023 09:08:38 -0400</pubDate>
+      
+      <guid>https://blog.i-eat-sponges.ca/red-teaming/nmap_tricks/</guid>
+      <description>Stealth may be an important factor when scanning a certain machine. Nmap IDLE scan is perfect for this, all we need to do is find &amp;ldquo;zombie hosts&amp;rdquo; which are basically just idle machines (machine not currently being used by anyone) that have an incremential IP ID
+Find Zombies :
+nmap -iR 1000 -p80 --script ipidseq Then you can use the found zombies to scan a target :
+nmap -sI &amp;lt;zombie ip or domain&amp;gt; .</description>
+      <content>&lt;p&gt;Stealth may be an important factor when scanning a certain machine. Nmap IDLE scan is perfect for this, all we need to do is find &amp;ldquo;zombie hosts&amp;rdquo; which are basically just idle machines (machine not currently being used by anyone) that have an incremential IP ID&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Find Zombies&lt;/strong&gt; :&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -iR 1000 -p80 --script ipidseq
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;Then you can use the found zombies to scan a target :&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -sI &amp;lt;zombie ip or domain&amp;gt; ... &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Another cool stealth trick you can use with nmap is to use tor proxies, you don&amp;rsquo;t need to use the proxychains command with nmap, instead you can use &lt;code&gt;--proxies&lt;/code&gt; like the following.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Use Nmap with Proxies :&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -sT -Pn -v -sV -O -A --proxies socks4://127.0.0.1:9050
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;You can also trace the route of your packets using the &lt;code&gt;--trace-packet switch&lt;/code&gt; like the following.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Use Nmap with Proxies but trace the packets :&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -sT -Pn -v -sV -O -A --proxies socks4://127.0.0.1:9050 --packet-trace
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;You can generate random IP addresses using the following command :&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -iR 1000 -sn --proxies socks4://127.0.0.1:9050
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;You can use NCrack to crack most services :&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ncrack ssh://&amp;lt;ipaddress&amp;gt;:&amp;lt;port&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;You can specify a user with NCrack :&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;ncrack -U admin ssh://&amp;lt;ipaddress&amp;gt;:&amp;lt;port&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;You can perform Geolocation with one of the following scripts :&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap --script ip-geolocation-maxmind, ip-geolocation-ipinfodb, ip-geolocation-geoplugin
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;You can get WHOIS records for a domain using the following scripts :&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -sn --script whois-* &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;querying-shodan-to-obtain-target-information&#34;&gt;Querying Shodan to obtain target information&lt;/h2&gt;
+&lt;p&gt;The NSE script shodan-api needs an API key before it can be used, Shodan offers a free developer API that you can obtain &lt;a href=&#34;https://developer.shodan.io&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -sn -Pn -n --script shodan-api --script-args shodan-api.apikey=&amp;lt;apikey&amp;gt; &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;checking-whether-a-host-is-flagged-by-google-safe-browsing-for-malicious-activities&#34;&gt;Checking Whether a host is flagged by Google Safe Browsing for Malicious Activities&lt;/h2&gt;
+&lt;p&gt;Nmap allows us to systematically check whether a host is known for distributing malware or being used in phishing attacks, with some help from the Google Safe Browsing API.&lt;/p&gt;
+&lt;p&gt;The http-google-malware script depends on google&amp;rsquo;s safe browsing service, and it requires you to &lt;a href=&#34;https://developers.google.com/safe-browsing/?csw=1&#34;&gt;register&lt;/a&gt; to get an API key.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p80 --script http-google-malware --script-args http-google-malware.api=&amp;lt;API&amp;gt; &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;collecting-valid-e-mail-accounts-and-ip-addresses-from-web-servers&#34;&gt;Collecting valid e-mail accounts and IP addresses from web servers&lt;/h2&gt;
+&lt;p&gt;You can try and collect valid e-mail accounts and IP addresses from web servers using the http-grep script. The http-grep script crawls a web application and matches patterns to extract interesting information from all pages. The script will search for e-mail and IP addresses by default, but there are other built-in patterns for things such as social security or credit card numbers.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Default :&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p443 --script http-grep nmap.org
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The script http-grep can select different patterns for extraction by setting the script argument http-grep.builtins. The built-in patterns are the following.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;E-mail&lt;/li&gt;
+&lt;li&gt;Phone&lt;/li&gt;
+&lt;li&gt;Mastercard&lt;/li&gt;
+&lt;li&gt;Discover&lt;/li&gt;
+&lt;li&gt;VISA&lt;/li&gt;
+&lt;li&gt;Amex&lt;/li&gt;
+&lt;li&gt;SSN&lt;/li&gt;
+&lt;li&gt;IP address&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;With Patterns :&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p443 --script http-grep --script-args http-grep.builtins={&amp;#34;mastercard&amp;#34;, &amp;#34;discover&amp;#34;, &amp;#34;ssn&amp;#34;, &amp;#34;visa&amp;#34;, &amp;#34;e-mail&amp;#34;, &amp;#34;ip address&amp;#34;}
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;discovering-hostnames-pointing-to-the-same-ip-address&#34;&gt;Discovering hostnames pointing to the same IP Address&lt;/h2&gt;
+&lt;p&gt;Web servers return different content depending on the hostname used in the HTTP request. By discovering new hostnames, penetration testers can access new target web applications that were inaccessible using the server&amp;rsquo;s IP.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -sn --script hostmap-* &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;discovering-hostnames-by-bruteforcing-dns-records&#34;&gt;Discovering hostnames by bruteforcing DNS records&lt;/h2&gt;
+&lt;p&gt;DNS records hold a surprising amount of host information, and by bruteforcing them we can reveal additional targets. DNS entries often give away information; for example, a DNS record type A named mail obviously indicates that we are dealing with a mail server, or Cloudflare&amp;rsquo;s default DNS entry named direct most of the time will point to the IP that they are trying to protect.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap --script dns-brute &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;checking-whether-a-web-server-is-an-open-proxy&#34;&gt;Checking whether a web server is an open proxy&lt;/h2&gt;
+&lt;p&gt;HTTP proxies are used to make requests through their addresses, therefore hiding out real IP address from the target. Detecting them is important if you are a system administrator who needs to keep the network secure or as an attacker looking to spoof your real origin.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap --script http-open-proxy -p8080 &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;discovering-interesting-files-in-a-web-server&#34;&gt;Discovering interesting files in a web server&lt;/h2&gt;
+&lt;p&gt;You can discover interesting files in a web server by using the http-enum script.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap --script http-enum -p80 &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;detecting-web-application-firewalls&#34;&gt;Detecting Web Application Firewalls&lt;/h2&gt;
+&lt;p&gt;Web servers are often protected by packet filtering systems that drop or redirect suspected malicious packets. Web penetration testers benefit from knowing that there is a traffic filtering system between them and the target application.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p80 --script http-waf-detect, http-waf-fingerprint &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;finding-web-applications-with-default-credentials&#34;&gt;Finding web applications with default credentials&lt;/h2&gt;
+&lt;p&gt;Default credentials are often forgotten in web applications and devices, such as webcams, printers, VoIP systems, video conference systems, and other applicances. There is a very useful NSE script to automate the process of testing default credentials in the network.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p80 --script http-default-accounts &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;scrapping-e-mail-accounts-from-web-servers&#34;&gt;Scrapping e-mail accounts from web servers&lt;/h2&gt;
+&lt;p&gt;Finding valid e-mail accounts is an important task during a penetration test. E-mail accounts are often used as usernames in some systems and web applications. Attackers often target the highly sensitive information that is stored in them.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p80 --script http-grep --script-args http-grep.builtins=e-mail &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;obtaining-system-information-from-smb&#34;&gt;Obtaining System Information from SMB&lt;/h2&gt;
+&lt;p&gt;SMBv1 has an interesting feature that has been abused for years, that is that SMBv1 servers return system information without authentication. The information includes Windows version, build number, NetBIOS computer name, workgroup, and exact system time.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p139,445 --script smb-os-discovery &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;detecting-smb-vulnerabilities&#34;&gt;Detecting SMB vulnerabilities&lt;/h2&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p445 --script smb-vuln-* &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;retrieving-the-netbios-name-and-mac-address-of-a-host&#34;&gt;Retrieving the NetBIOS name and MAC address of a host&lt;/h2&gt;
+&lt;p&gt;NetBIOS name resolution is enabled in most of Windows clients today and even a debugging utility called nbtstat is shipped with Windows to diagnose name resolution problems with NetBIOS over TCP/IP.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -sU -p137 --script nbtstat &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;enumerating-user-accounts-of-windows-hosts&#34;&gt;Enumerating user accounts of Windows hosts&lt;/h2&gt;
+&lt;p&gt;User enumeration allows attackers to conduct dictionary attacks against systems and reveals information about who has access to the. Against Windows systems, there are two known techniques to enumerate the user in the system: &lt;strong&gt;SAMR enumeration&lt;/strong&gt; and &lt;strong&gt;LSA bruteforcing&lt;/strong&gt;.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p139,445 --script smb-enum-users &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;enumerating-shared-folders&#34;&gt;Enumerating Shared Folders&lt;/h2&gt;
+&lt;p&gt;Shared folders in organizations are very common and bad practices among users present a major risk.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p139,445 --script smb-enum-shares --script-args smbusername=Administrator,smbpassword=&amp;lt;password&amp;gt; &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;enumerating-smb-sessions&#34;&gt;Enumerating SMB Sessions&lt;/h2&gt;
+&lt;p&gt;SMB Sessions reflect people connected to file shares or making RPC calls and they can provide invaluable information that can be used to profile users and machines. The SMB session information includes usernames, origin IP addresses, and even idle time.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p445 --script smb-enum-sessions &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;finding-domain-controllers&#34;&gt;Finding Domain Controllers&lt;/h2&gt;
+&lt;p&gt;Domain controllers are the most important systems in Microsoft Windows networks using the AD technologyy as they control all the machines in the network and host critical services for the organization&amp;rsquo;s operations such as DNS resolution.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;nmap -p389 -sV &amp;lt;target&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Domain controllers will show port 389 running the Microsoft Windows AD LDAP service :&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;PORT STATE SERVICE VERSION
+389/tcp open ldap Microsoft Windows AD LDAP (Domain:TESTDOMAIN, Site: TEST)
+&lt;/code&gt;&lt;/pre&gt;</content>
+    </item>
+    
+  </channel>
+</rss>

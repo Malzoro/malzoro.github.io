@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Crackings on uint8_t* blog</title>
+    <link>https://blog.i-eat-sponges.ca/cracking/</link>
+    <description>Recent content in Crackings on uint8_t* blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 23 Sep 2023 16:26:10 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/cracking/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hexagon</title>
+      <link>https://blog.i-eat-sponges.ca/cracking/hexagon/</link>
+      <pubDate>Sat, 23 Sep 2023 16:26:10 -0400</pubDate>
+      
+      <guid>https://blog.i-eat-sponges.ca/cracking/hexagon/</guid>
+      <description>Super easy reverse-engineering challenge, very good intro to reversing C++ binaries.
+You&amp;rsquo;ll learn how std::cout, std::cin works at a lower level.
+For example it&amp;rsquo;s the first time i notice that std::cout and std::cin are stored in the .bss segment.
+As you can see the challenge is relatively easy, we&amp;rsquo;re checking that the input is between 7 and 11 bytes. Next we&amp;rsquo;re doing the following checks.
+byte 0 needs to be J (R - 0x8) byte 2 needs to be 0 byte 4 needs to be - byte 3 and 7 needs to be equal If we match all these conditions then we won the challenge, we can come up with the answer.</description>
+      <content>&lt;p&gt;Super easy reverse-engineering challenge, very good intro to reversing C++ binaries.&lt;/p&gt;
+&lt;p&gt;You&amp;rsquo;ll learn how &lt;code&gt;std::cout&lt;/code&gt;, &lt;code&gt;std::cin&lt;/code&gt; works at a lower level.&lt;/p&gt;
+&lt;p&gt;For example it&amp;rsquo;s the first time i notice that &lt;code&gt;std::cout&lt;/code&gt; and &lt;code&gt;std::cin&lt;/code&gt; are stored in the &lt;code&gt;.bss&lt;/code&gt; segment.&lt;/p&gt;
+
+&lt;img src=&#34;https://blog.i-eat-sponges.ca/code.png&#34;  alt=&#34;Hello Friend&#34;  class=&#34;center&#34;    /&gt;
+
+
+&lt;p&gt;As you can see the challenge is relatively easy, we&amp;rsquo;re checking that the input is between 7 and 11 bytes. Next we&amp;rsquo;re doing the following checks.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;byte 0 needs to be J (R - 0x8)&lt;/li&gt;
+&lt;li&gt;byte 2 needs to be 0&lt;/li&gt;
+&lt;li&gt;byte 4 needs to be -&lt;/li&gt;
+&lt;li&gt;byte 3 and 7 needs to be equal&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If we match all these conditions then we won the challenge, we can come up with the answer.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;JA0A-AAA
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Testing this key, we successfully win the challenge.&lt;/p&gt;
+</content>
+    </item>
+    
+  </channel>
+</rss>

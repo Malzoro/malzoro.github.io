@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   
-    <title>stack :: uint8_t* blog</title>
+    <title>Hexagon :: uint8_t* blog</title>
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="" />
+<meta name="description" content="Super easy C&#43;&#43; reverse engineering challenge, very good intro to reversing for newbies !" />
 <meta name="keywords" content="" />
 
   <meta name="robots" content="noodp" />
 
-<link rel="canonical" href="https://blog.i-eat-sponges.ca/tags/stack/" />
+<link rel="canonical" href="https://blog.i-eat-sponges.ca/cracking/hexagon/" />
 
 
 
@@ -46,10 +46,10 @@
 
 
 <meta property="og:locale" content="en" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="stack">
-<meta property="og:description" content="" />
-<meta property="og:url" content="https://blog.i-eat-sponges.ca/tags/stack/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Hexagon">
+<meta property="og:description" content="Super easy C&#43;&#43; reverse engineering challenge, very good intro to reversing for newbies !" />
+<meta property="og:url" content="https://blog.i-eat-sponges.ca/cracking/hexagon/" />
 <meta property="og:site_name" content="uint8_t* blog" />
 
   
@@ -60,10 +60,10 @@
 <meta property="og:image:height" content="627">
 
 
+  <meta property="article:published_time" content="2023-09-23 16:26:10 -0400 EDT" />
 
 
 
-  <link href="/tags/stack/index.xml" rel="alternate" type="application/rss+xml" title="uint8_t* blog" />
 
 
 
@@ -159,55 +159,54 @@
 
   <div class="content">
     
-  <h1>Posts for: #stack</h1>
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://blog.i-eat-sponges.ca/cracking/hexagon/">Hexagon</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2023-09-23</time></div>
+
   
-  <div class="posts">
+    <span class="post-tags">
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/cracking/">cracking</a>&nbsp;
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/easy/">easy</a>&nbsp;
+      
+    </span>
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p>Super easy reverse-engineering challenge, very good intro to reversing C++ binaries.</p>
+<p>You&rsquo;ll learn how <code>std::cout</code>, <code>std::cin</code> works at a lower level.</p>
+<p>For example it&rsquo;s the first time i notice that <code>std::cout</code> and <code>std::cin</code> are stored in the <code>.bss</code> segment.</p>
+
+<img src="/code.png"  alt="Hello Friend"  class="center"    />
+
+
+<p>As you can see the challenge is relatively easy, we&rsquo;re checking that the input is between 7 and 11 bytes. Next we&rsquo;re doing the following checks.</p>
+<ul>
+<li>byte 0 needs to be J (R - 0x8)</li>
+<li>byte 2 needs to be 0</li>
+<li>byte 4 needs to be -</li>
+<li>byte 3 and 7 needs to be equal</li>
+</ul>
+<p>If we match all these conditions then we won the challenge, we can come up with the answer.</p>
+<pre tabindex="0"><code>JA0A-AAA
+</code></pre><p>Testing this key, we successfully win the challenge.</p>
+
+      </div></div>
+
+  
+
+  
     
-      <article class="post on-list">
-        <h1 class="post-title">
-          <a href="https://blog.i-eat-sponges.ca/exploitation/execve_using_stack/">Stack String Manipulation</a>
-        </h1>
-        <div class="post-meta"><time class="post-date">2023-09-22</time></div>
 
-        
-          <span class="post-tags">
-            
-            #<a href="https://blog.i-eat-sponges.ca/tags/shellcoding/">shellcoding</a>&nbsp;
-            
-            #<a href="https://blog.i-eat-sponges.ca/tags/basics/">basics</a>&nbsp;
-            
-            #<a href="https://blog.i-eat-sponges.ca/tags/stack/">stack</a>&nbsp;
-            
-            #<a href="https://blog.i-eat-sponges.ca/tags/string/">string</a>&nbsp;
-            
-          </span>
-        
-
-        
-
-
-        <div class="post-content">
-          
-            In this post I will explain string manipulation on the stack, using shellcoding as an example.
-          
-        </div>
-
-        
-          <div>
-            <a class="read-more button" href="/exploitation/execve_using_stack/">Read More →</a>
-          </div>
-        
-      </article>
-    
-
-    <div class="pagination">
-  <div class="pagination__buttons">
-    
-    
-  </div>
-</div>
-
-  </div>
+  
+</article>
 
   </div>
 

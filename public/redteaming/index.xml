@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>tricks on uint8_t* blog</title>
-    <link>https://blog.i-eat-sponges.ca/tags/tricks/</link>
-    <description>Recent content in tricks on uint8_t* blog</description>
+    <title>Redteamings on uint8_t* blog</title>
+    <link>https://blog.i-eat-sponges.ca/redteaming/</link>
+    <description>Recent content in Redteamings on uint8_t* blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 23 Sep 2023 09:08:38 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/tags/tricks/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 23 Sep 2023 09:08:38 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/redteaming/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>NMAP Red-Teaming Tips and Tricks</title>
       <link>https://blog.i-eat-sponges.ca/redteaming/nmap_tricks/</link>

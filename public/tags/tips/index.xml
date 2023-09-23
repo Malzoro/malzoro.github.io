@@ -9,10 +9,10 @@
     <lastBuildDate>Sat, 23 Sep 2023 09:08:38 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/tags/tips/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>NMAP Red-Teaming Tips and Tricks</title>
-      <link>https://blog.i-eat-sponges.ca/red-teaming/nmap_tricks/</link>
+      <link>https://blog.i-eat-sponges.ca/redteaming/nmap_tricks/</link>
       <pubDate>Sat, 23 Sep 2023 09:08:38 -0400</pubDate>
       
-      <guid>https://blog.i-eat-sponges.ca/red-teaming/nmap_tricks/</guid>
+      <guid>https://blog.i-eat-sponges.ca/redteaming/nmap_tricks/</guid>
       <description>Stealth may be an important factor when scanning a certain machine. Nmap IDLE scan is perfect for this, all we need to do is find &amp;ldquo;zombie hosts&amp;rdquo; which are basically just idle machines (machine not currently being used by anyone) that have an incremential IP ID
 Find Zombies :
 nmap -iR 1000 -p80 --script ipidseq Then you can use the found zombies to scan a target :

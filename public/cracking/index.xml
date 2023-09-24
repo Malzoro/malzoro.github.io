@@ -6,7 +6,27 @@
     <description>Recent content in Crackings on uint8_t* blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 23 Sep 2023 16:26:10 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/cracking/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 24 Sep 2023 18:19:45 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/cracking/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Discord Cracking Challenge (easy)</title>
+      <link>https://blog.i-eat-sponges.ca/cracking/discord1/</link>
+      <pubDate>Sun, 24 Sep 2023 18:19:45 -0400</pubDate>
+      
+      <guid>https://blog.i-eat-sponges.ca/cracking/discord1/</guid>
+      <description>This binary came from a discord server, I won&amp;rsquo;t mention which exactly, so this won&amp;rsquo;t be indexed.
+The binary was really easy, we see a while loop and the xor key \xda\xd0\x23\x73.
+I solved the challenge using binary ninja python api, took me about 10 seconds.
+&amp;gt;&amp;gt;&amp;gt; output = bv.read(0x140009000, 0x20) &amp;gt;&amp;gt;&amp;gt; xor = Transform[&amp;#39;XOR&amp;#39;] &amp;gt;&amp;gt;&amp;gt; xor.decode(output, {&amp;#39;key&amp;#39; : b&amp;#39;\xda\xd0\x23\x73&amp;#39;}) b&amp;#39;FLAG{ReversE_EngineerinG_IS_FuN}&amp;#39; </description>
+      <content>&lt;p&gt;This binary came from a discord server, I won&amp;rsquo;t mention which exactly, so this won&amp;rsquo;t be indexed.&lt;/p&gt;
+&lt;p&gt;The binary was really easy, we see a while loop and the xor key &lt;code&gt;\xda\xd0\x23\x73&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;I solved the challenge using binary ninja python api, took me about 10 seconds.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; output &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; bv&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read(&lt;span style=&#34;color:#ae81ff&#34;&gt;0x140009000&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0x20&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; xor &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Transform[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;XOR&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; xor&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;decode(output, {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;key&amp;#39;&lt;/span&gt; : &lt;span style=&#34;color:#e6db74&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\xda\xd0\x23\x73&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;FLAG&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{ReversE_EngineerinG_IS_FuN}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+    </item>
+    
     <item>
       <title>Hexagon</title>
       <link>https://blog.i-eat-sponges.ca/cracking/hexagon/</link>

@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   
-    <title>Crackings :: uint8_t* blog</title>
+    <title>Discord Cracking Challenge (easy) :: uint8_t* blog</title>
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="" />
+<meta name="description" content="Easy cracking challenge on a discord server i recently found." />
 <meta name="keywords" content="" />
 
   <meta name="robots" content="noodp" />
 
-<link rel="canonical" href="https://blog.i-eat-sponges.ca/cracking/" />
+<link rel="canonical" href="https://blog.i-eat-sponges.ca/cracking/discord1/" />
 
 
 
@@ -46,10 +46,10 @@
 
 
 <meta property="og:locale" content="en" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Crackings">
-<meta property="og:description" content="" />
-<meta property="og:url" content="https://blog.i-eat-sponges.ca/cracking/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Discord Cracking Challenge (easy)">
+<meta property="og:description" content="Easy cracking challenge on a discord server i recently found." />
+<meta property="og:url" content="https://blog.i-eat-sponges.ca/cracking/discord1/" />
 <meta property="og:site_name" content="uint8_t* blog" />
 
   
@@ -60,10 +60,10 @@
 <meta property="og:image:height" content="627">
 
 
+  <meta property="article:published_time" content="2023-09-24 18:19:45 -0400 EDT" />
 
 
 
-  <link href="/cracking/index.xml" rel="alternate" type="application/rss+xml" title="uint8_t* blog" />
 
 
 
@@ -159,82 +159,44 @@
 
   <div class="content">
     
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://blog.i-eat-sponges.ca/cracking/discord1/">Discord Cracking Challenge (easy)</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2023-09-24</time></div>
+
   
-  <div class="posts">
-    
-      <article class="post on-list">
-        <h1 class="post-title">
-          <a href="https://blog.i-eat-sponges.ca/cracking/discord1/">Discord Cracking Challenge (easy)</a>
-        </h1>
-        <div class="post-meta"><time class="post-date">2023-09-24</time></div>
-
-        
-          <span class="post-tags">
-            
-            #<a href="https://blog.i-eat-sponges.ca/tags/cracking/">cracking</a>&nbsp;
-            
-            #<a href="https://blog.i-eat-sponges.ca/tags/easy/">easy</a>&nbsp;
-            
-          </span>
-        
-
-        
+    <span class="post-tags">
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/cracking/">cracking</a>&nbsp;
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/easy/">easy</a>&nbsp;
+      
+    </span>
+  
+  
 
 
-        <div class="post-content">
-          
-            Easy cracking challenge on a discord server i recently found.
-          
-        </div>
+  
 
-        
-          <div>
-            <a class="read-more button" href="/cracking/discord1/">Read More →</a>
-          </div>
-        
-      </article>
-    
-      <article class="post on-list">
-        <h1 class="post-title">
-          <a href="https://blog.i-eat-sponges.ca/cracking/hexagon/">Hexagon</a>
-        </h1>
-        <div class="post-meta"><time class="post-date">2023-09-23</time></div>
+  <div class="post-content"><div>
+        <p>This binary came from a discord server, I won&rsquo;t mention which exactly, so this won&rsquo;t be indexed.</p>
+<p>The binary was really easy, we see a while loop and the xor key <code>\xda\xd0\x23\x73</code>.</p>
+<p>I solved the challenge using binary ninja python api, took me about 10 seconds.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> output <span style="color:#f92672">=</span> bv<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">0x140009000</span>, <span style="color:#ae81ff">0x20</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> xor <span style="color:#f92672">=</span> Transform[<span style="color:#e6db74">&#39;XOR&#39;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> xor<span style="color:#f92672">.</span>decode(output, {<span style="color:#e6db74">&#39;key&#39;</span> : <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\xda\xd0\x23\x73</span><span style="color:#e6db74">&#39;</span>})
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;FLAG</span><span style="color:#e6db74">{ReversE_EngineerinG_IS_FuN}</span><span style="color:#e6db74">&#39;</span>
+</span></span></code></pre></div>
+      </div></div>
 
-        
-          <span class="post-tags">
-            
-            #<a href="https://blog.i-eat-sponges.ca/tags/cracking/">cracking</a>&nbsp;
-            
-            #<a href="https://blog.i-eat-sponges.ca/tags/easy/">easy</a>&nbsp;
-            
-          </span>
-        
+  
 
-        
-
-
-        <div class="post-content">
-          
-            Super easy C++ reverse engineering challenge, very good intro to reversing for newbies !
-          
-        </div>
-
-        
-          <div>
-            <a class="read-more button" href="/cracking/hexagon/">Read More →</a>
-          </div>
-        
-      </article>
+  
     
 
-    <div class="pagination">
-  <div class="pagination__buttons">
-    
-    
-  </div>
-</div>
-
-  </div>
+  
+</article>
 
   </div>
 

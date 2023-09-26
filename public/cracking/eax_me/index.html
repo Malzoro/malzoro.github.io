@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>EAX ME - MEDIUM/HARD :: uint8_t* blog</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Medium/Hard Cracking Challenge, a UPX Packed binary with additional obfuscation rendering unpacking impossible, we have to think outside of the box to trace what is happening and find the key." />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="https://blog.i-eat-sponges.ca/cracking/eax_me/" />
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://blog.i-eat-sponges.ca/styles.css">
+
+
+
+
+
+
+
+  <link rel="shortcut icon" href="https://blog.i-eat-sponges.ca/img/theme-colors/red.png">
+  <link rel="apple-touch-icon" href="https://blog.i-eat-sponges.ca/img/theme-colors/red.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="uint8_t" />
+  
+    <meta name="twitter:creator" content="" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="EAX ME - MEDIUM/HARD">
+<meta property="og:description" content="Medium/Hard Cracking Challenge, a UPX Packed binary with additional obfuscation rendering unpacking impossible, we have to think outside of the box to trace what is happening and find the key." />
+<meta property="og:url" content="https://blog.i-eat-sponges.ca/cracking/eax_me/" />
+<meta property="og:site_name" content="uint8_t* blog" />
+
+  
+    <meta property="og:image" content="https://blog.i-eat-sponges.ca/img/favicon/red.png">
+  
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2023-09-26 19:49:03 -0400 EDT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="red">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="https://blog.i-eat-sponges.ca">
+  <div class="logo">
+    uint8_t*
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/home/about/">About Me</a></li>
+        
+      
+        
+          <li><a href="/cracking/">Cracking</a></li>
+        
+      
+        
+          <li><a href="/exploitation/">Exploitation</a></li>
+        
+      
+        
+          <li><a href="/malware/">Malware</a></li>
+        
+      
+        
+          <li><a href="/redteaming/">Red Teaming</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/home/about/" >About Me</a></li>
+        
+      
+        
+          <li><a href="/cracking/" >Cracking</a></li>
+        
+      
+        
+          <li><a href="/exploitation/" >Exploitation</a></li>
+        
+      
+        
+          <li><a href="/malware/" >Malware</a></li>
+        
+      
+        
+          <li><a href="/redteaming/" >Red Teaming</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://blog.i-eat-sponges.ca/cracking/eax_me/">EAX ME - MEDIUM/HARD</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2023-09-26</time></div>
+
+  
+    <span class="post-tags">
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/cracking/">cracking</a>&nbsp;
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/pintools/">pintools</a>&nbsp;
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/medium/">medium</a>&nbsp;
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/hard/">hard</a>&nbsp;
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/packed/">packed</a>&nbsp;
+      
+    </span>
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p>Windows x86 Console application
+Heavily obfuscated, presumably with author&rsquo;s own tool:
+<a href="https://github.com/DosX-dev/ASM-Guard">https://github.com/DosX-dev/ASM-Guard</a></p>
+<p>Prompt:</p>
+<pre tabindex="0"><code>EAX-Crackme! Coded by DosX
+Enter the key: ABCDEFGH
+
+ No, you are a loser :(
+</code></pre><p>That&rsquo;s not very nice.
+I guess we have to crack it now.</p>
+<h1 id="first-glance">First glance<a href="#first-glance" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>Opening in CFF Explorer, here&rsquo;s the entire recoverable import table, note that these imports are common with packers:</p>
+<pre tabindex="0"><code>Address	                Ordinal	Name	Library
+000000000040B03C		LoadLibraryA	KERNEL32
+000000000040B040		ExitProcess	    KERNEL32
+000000000040B044		GetProcAddress	KERNEL32
+000000000040B048		VirtualProtect	KERNEL32
+000000000040B050		exit            msvcrt
+</code></pre><p>And here&rsquo;s what we find searching for strings:</p>
+<pre tabindex="0"><code>DOSX:0040612C aByDosxEnterThe db &#39; by DosX&#39;,0Ah
+DOSX:0040612C                 db &#39;Enter the key: &#39;,0
+DOSX:00406145                 db 25h, 36h, 5Bh
+DOSX:00406148                 dd 0DFEC0A5Eh, 255DFFFEh, 0A00632Ah, 0A732520h, 65655900h
+</code></pre><p>With no xrefs obviously.</p>
+<p>Picking it apart manually is clearly out of the question.</p>
+<h1 id="finding-the-relevant-code">Finding the relevant code<a href="#finding-the-relevant-code" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h1>
+<p>Let&rsquo;s start simple with API call logging with api_log so we can see what it&rsquo;s actually importing and using, and to figure out how the input/output is being performed.</p>
+<p>We see some interesting things happening in the log file when searching for returns to user code:</p>
+<pre tabindex="0"><code>...
+Line 2693: C:\Windows\SysWOW64\msvcrt.dll!printf returns to 401015
+Line 2765: C:\Windows\SysWOW64\msvcrt.dll!scanf returns to 401027
+Line 2813: C:\Windows\SysWOW64\msvcrt.dll!strlen returns to 401033
+Line 2814: C:\Windows\SysWOW64\msvcrt.dll!printf returns to 4010da
+Line 2842: C:\Windows\SysWOW64\msvcrt.dll!_getch returns to 4010e2
+</code></pre><p>If we attach to the process while it&rsquo;s running with x32dbg and go to address 401027, we can find the following verification logic:</p>
+<pre tabindex="0"><code>00401022    call &lt;JMP.&amp;scanf&gt;
+00401027    add esp,8
+0040102A    lea eax,dword ptr ss:[ebp-1]
+0040102D    push eax
+0040102E    call &lt;JMP.&amp;strlen&gt;
+00401033    add esp,4
+00401036    cmp eax,6
+00401039    jne eax.4010AD
+0040103F    lea eax,dword ptr ss:[ebp-1]
+00401042    add eax,3
+00401045    movsx ecx,byte ptr ds:[eax]
+00401048    cmp ecx,61						; &#39;a&#39;
+0040104B    jne eax.4010AD
+00401051    lea eax,dword ptr ss:[ebp-1]
+00401054    add eax,1
+00401057    movsx ecx,byte ptr ds:[eax]
+0040105A    cmp ecx,3C						; &#39;&lt;&#39;
+0040105D    jne eax.4010AD
+00401063    movsx eax,byte ptr ss:[ebp-1]
+00401067    cmp eax,49						; &#39;I&#39;
+0040106A    jne eax.4010AD
+00401070    lea eax,dword ptr ss:[ebp-1]
+00401073    add eax,4
+00401076    movsx ecx,byte ptr ds:[eax]
+00401079    cmp ecx,73						; &#39;s&#39;
+0040107C    jne eax.4010AD
+00401082    lea eax,dword ptr ss:[ebp-1]
+00401085    add eax,5
+00401088    movsx ecx,byte ptr ds:[eax]
+0040108B    cmp ecx,6D						; &#39;m&#39;
+0040108E    jne eax.4010AD
+00401094    lea eax,dword ptr ss:[ebp-1]
+00401097    add eax,2
+0040109A    movsx ecx,byte ptr ds:[eax]
+0040109D    cmp ecx,33						; &#39;3&#39;
+004010A0    jne eax.4010AD
+004010A6    mov eax,1
+004010AB    jmp eax.4010B2
+004010AD    mov eax,0
+004010B2    test eax,eax
+004010B4    je eax.4010BF
+004010BA    jmp eax.4010C9
+004010BF    mov eax,eax.402056        402056:&#34;No, you are a loser :(&#34;
+004010C4    jmp eax.4010CE
+004010C9    mov eax,eax.40203B        40203B:&#34;Yees! You are the best! :)&#34;
+</code></pre><p>The characters are verified out of order.</p>
+<p>The quickest way to get the correct order is just to enter &lsquo;123456&rsquo; as the password and step through to see which number is compared to which value.</p>
+<p>Putting them all in order we get &lsquo;I&lt;3asm&rsquo;:</p>
+<pre tabindex="0"><code>EAX-Crackme! Coded by DosX
+Enter the key: I&lt;3asm
+
+ Yees! You are the best! :)
+</code></pre>
+      </div></div>
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>uint8_t*</span><span> - 2023</span>
+    
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

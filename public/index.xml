@@ -6,7 +6,108 @@
     <description>Recent content on uint8_t* blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 24 Sep 2023 18:19:45 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 26 Sep 2023 19:49:03 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EAX ME - MEDIUM/HARD</title>
+      <link>https://blog.i-eat-sponges.ca/cracking/eax_me/</link>
+      <pubDate>Tue, 26 Sep 2023 19:49:03 -0400</pubDate>
+      
+      <guid>https://blog.i-eat-sponges.ca/cracking/eax_me/</guid>
+      <description>Windows x86 Console application Heavily obfuscated, presumably with author&amp;rsquo;s own tool: https://github.com/DosX-dev/ASM-Guard
+Prompt:
+EAX-Crackme! Coded by DosX Enter the key: ABCDEFGH No, you are a loser :( That&amp;rsquo;s not very nice. I guess we have to crack it now.
+First glance Opening in CFF Explorer, here&amp;rsquo;s the entire recoverable import table, note that these imports are common with packers:
+Address	Ordinal	Name	Library 000000000040B03C	LoadLibraryA	KERNEL32 000000000040B040	ExitProcess	KERNEL32 000000000040B044	GetProcAddress	KERNEL32 000000000040B048	VirtualProtect	KERNEL32 000000000040B050	exit msvcrt And here&amp;rsquo;s what we find searching for strings:</description>
+      <content>&lt;p&gt;Windows x86 Console application
+Heavily obfuscated, presumably with author&amp;rsquo;s own tool:
+&lt;a href=&#34;https://github.com/DosX-dev/ASM-Guard&#34;&gt;https://github.com/DosX-dev/ASM-Guard&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Prompt:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;EAX-Crackme! Coded by DosX
+Enter the key: ABCDEFGH
+
+ No, you are a loser :(
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;That&amp;rsquo;s not very nice.
+I guess we have to crack it now.&lt;/p&gt;
+&lt;h1 id=&#34;first-glance&#34;&gt;First glance&lt;/h1&gt;
+&lt;p&gt;Opening in CFF Explorer, here&amp;rsquo;s the entire recoverable import table, note that these imports are common with packers:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;Address	                Ordinal	Name	Library
+000000000040B03C		LoadLibraryA	KERNEL32
+000000000040B040		ExitProcess	    KERNEL32
+000000000040B044		GetProcAddress	KERNEL32
+000000000040B048		VirtualProtect	KERNEL32
+000000000040B050		exit            msvcrt
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And here&amp;rsquo;s what we find searching for strings:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;DOSX:0040612C aByDosxEnterThe db &amp;#39; by DosX&amp;#39;,0Ah
+DOSX:0040612C                 db &amp;#39;Enter the key: &amp;#39;,0
+DOSX:00406145                 db 25h, 36h, 5Bh
+DOSX:00406148                 dd 0DFEC0A5Eh, 255DFFFEh, 0A00632Ah, 0A732520h, 65655900h
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;With no xrefs obviously.&lt;/p&gt;
+&lt;p&gt;Picking it apart manually is clearly out of the question.&lt;/p&gt;
+&lt;h1 id=&#34;finding-the-relevant-code&#34;&gt;Finding the relevant code&lt;/h1&gt;
+&lt;p&gt;Let&amp;rsquo;s start simple with API call logging with api_log so we can see what it&amp;rsquo;s actually importing and using, and to figure out how the input/output is being performed.&lt;/p&gt;
+&lt;p&gt;We see some interesting things happening in the log file when searching for returns to user code:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;...
+Line 2693: C:\Windows\SysWOW64\msvcrt.dll!printf returns to 401015
+Line 2765: C:\Windows\SysWOW64\msvcrt.dll!scanf returns to 401027
+Line 2813: C:\Windows\SysWOW64\msvcrt.dll!strlen returns to 401033
+Line 2814: C:\Windows\SysWOW64\msvcrt.dll!printf returns to 4010da
+Line 2842: C:\Windows\SysWOW64\msvcrt.dll!_getch returns to 4010e2
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If we attach to the process while it&amp;rsquo;s running with x32dbg and go to address 401027, we can find the following verification logic:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;00401022    call &amp;lt;JMP.&amp;amp;scanf&amp;gt;
+00401027    add esp,8
+0040102A    lea eax,dword ptr ss:[ebp-1]
+0040102D    push eax
+0040102E    call &amp;lt;JMP.&amp;amp;strlen&amp;gt;
+00401033    add esp,4
+00401036    cmp eax,6
+00401039    jne eax.4010AD
+0040103F    lea eax,dword ptr ss:[ebp-1]
+00401042    add eax,3
+00401045    movsx ecx,byte ptr ds:[eax]
+00401048    cmp ecx,61						; &amp;#39;a&amp;#39;
+0040104B    jne eax.4010AD
+00401051    lea eax,dword ptr ss:[ebp-1]
+00401054    add eax,1
+00401057    movsx ecx,byte ptr ds:[eax]
+0040105A    cmp ecx,3C						; &amp;#39;&amp;lt;&amp;#39;
+0040105D    jne eax.4010AD
+00401063    movsx eax,byte ptr ss:[ebp-1]
+00401067    cmp eax,49						; &amp;#39;I&amp;#39;
+0040106A    jne eax.4010AD
+00401070    lea eax,dword ptr ss:[ebp-1]
+00401073    add eax,4
+00401076    movsx ecx,byte ptr ds:[eax]
+00401079    cmp ecx,73						; &amp;#39;s&amp;#39;
+0040107C    jne eax.4010AD
+00401082    lea eax,dword ptr ss:[ebp-1]
+00401085    add eax,5
+00401088    movsx ecx,byte ptr ds:[eax]
+0040108B    cmp ecx,6D						; &amp;#39;m&amp;#39;
+0040108E    jne eax.4010AD
+00401094    lea eax,dword ptr ss:[ebp-1]
+00401097    add eax,2
+0040109A    movsx ecx,byte ptr ds:[eax]
+0040109D    cmp ecx,33						; &amp;#39;3&amp;#39;
+004010A0    jne eax.4010AD
+004010A6    mov eax,1
+004010AB    jmp eax.4010B2
+004010AD    mov eax,0
+004010B2    test eax,eax
+004010B4    je eax.4010BF
+004010BA    jmp eax.4010C9
+004010BF    mov eax,eax.402056        402056:&amp;#34;No, you are a loser :(&amp;#34;
+004010C4    jmp eax.4010CE
+004010C9    mov eax,eax.40203B        40203B:&amp;#34;Yees! You are the best! :)&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The characters are verified out of order.&lt;/p&gt;
+&lt;p&gt;The quickest way to get the correct order is just to enter &amp;lsquo;123456&amp;rsquo; as the password and step through to see which number is compared to which value.&lt;/p&gt;
+&lt;p&gt;Putting them all in order we get &amp;lsquo;I&amp;lt;3asm&amp;rsquo;:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;EAX-Crackme! Coded by DosX
+Enter the key: I&amp;lt;3asm
+
+ Yees! You are the best! :)
+&lt;/code&gt;&lt;/pre&gt;</content>
+    </item>
+    
     <item>
       <title>Discord Cracking Challenge (easy)</title>
       <link>https://blog.i-eat-sponges.ca/cracking/discord1/</link>

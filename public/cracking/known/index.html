@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Flare-On 2021 - Known :: uint8_t* blog</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="In this challenge we&#39;re dealing with a ransomware, we have to decrypt the encrypted files by finding the algorithm used for encryption." />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="https://blog.i-eat-sponges.ca/cracking/known/" />
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://blog.i-eat-sponges.ca/styles.css">
+
+
+
+
+
+
+
+  <link rel="shortcut icon" href="https://blog.i-eat-sponges.ca/img/theme-colors/red.png">
+  <link rel="apple-touch-icon" href="https://blog.i-eat-sponges.ca/img/theme-colors/red.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="uint8_t" />
+  
+    <meta name="twitter:creator" content="" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Flare-On 2021 - Known">
+<meta property="og:description" content="In this challenge we&#39;re dealing with a ransomware, we have to decrypt the encrypted files by finding the algorithm used for encryption." />
+<meta property="og:url" content="https://blog.i-eat-sponges.ca/cracking/known/" />
+<meta property="og:site_name" content="uint8_t* blog" />
+
+  
+    <meta property="og:image" content="https://blog.i-eat-sponges.ca/img/favicon/red.png">
+  
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+  <meta property="article:published_time" content="2023-09-26 20:12:52 -0400 EDT" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="red">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="https://blog.i-eat-sponges.ca">
+  <div class="logo">
+    uint8_t*
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/home/about/">About Me</a></li>
+        
+      
+        
+          <li><a href="/cracking/">Cracking</a></li>
+        
+      
+        
+          <li><a href="/exploitation/">Exploitation</a></li>
+        
+      
+        
+          <li><a href="/malware/">Malware</a></li>
+        
+      
+        
+          <li><a href="/redteaming/">Red Teaming</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/home/about/" >About Me</a></li>
+        
+      
+        
+          <li><a href="/cracking/" >Cracking</a></li>
+        
+      
+        
+          <li><a href="/exploitation/" >Exploitation</a></li>
+        
+      
+        
+          <li><a href="/malware/" >Malware</a></li>
+        
+      
+        
+          <li><a href="/redteaming/" >Red Teaming</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://blog.i-eat-sponges.ca/cracking/known/">Flare-On 2021 - Known</a>
+  </h1>
+  <div class="post-meta"><time class="post-date">2023-09-26</time></div>
+
+  
+    <span class="post-tags">
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/flare/">flare</a>&nbsp;
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/cracking/">cracking</a>&nbsp;
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/easy/">easy</a>&nbsp;
+      
+      #<a href="https://blog.i-eat-sponges.ca/tags/ransomware/">ransomware</a>&nbsp;
+      
+    </span>
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <p>I really loved this challenge, mainly because it was ransomware and you had to decode the encrypted files to recover the flag.</p>
+<p>We are given the following files.</p>
+<pre tabindex="0"><code>.
+├── Files
+│   ├── capa.png.encrypted
+│   ├── cicero.txt.encrypted
+│   ├── commandovm.gif.encrypted
+│   ├── critical_data.txt.encrypted
+│   ├── flarevm.jpg.encrypted
+│   └── latin_alphabet.txt.encrypted
+└── UnlockYourFiles.exe
+
+2 directories, 7 files
+</code></pre><p>Looking at UnlockYourFiles we can see that it&rsquo;s a decryptor for a ransomware, and looking at the <code>Files</code> directory, we can see the encrypted files.</p>
+<p>Running UnlockYourFiles.exe asks us a key to decrypt the files, however we do not want to pay the ransom so we&rsquo;ll see if we can find a way to decrypt our files.</p>
+<p>We can see a base64 encoded string when running UnlockYourFiles, decoding this base64 string reveals the following clue.</p>
+<pre tabindex="0"><code>(&gt;0_0)&gt; It&#39;s dangerous to add+ror alone! Take this &lt;(0_0&lt;)
+</code></pre><p>Analyzing the binary we can see the following logic.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nasm" data-lang="nasm"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">004011</span><span style="color:#a6e22e">fe</span>  <span style="color:#ae81ff">80</span>f908            cmp   cl, <span style="color:#ae81ff">0x8</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">00401201</span>  <span style="color:#960050;background-color:#1e0010">7</span><span style="color:#a6e22e">d13</span>               jge     <span style="color:#ae81ff">0x401216</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">00401203</span>  <span style="color:#960050;background-color:#1e0010">8</span><span style="color:#a6e22e">a1c31</span>          mov    bl, <span style="color:#66d9ef">byte</span> [ecx<span style="color:#f92672">+</span>esi]
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">00401206</span>  <span style="color:#960050;background-color:#1e0010">8</span><span style="color:#a6e22e">a0439</span>          mov    al, <span style="color:#66d9ef">byte</span> [ecx<span style="color:#f92672">+</span>edi]
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">00401209</span>  <span style="color:#960050;background-color:#1e0010">32</span><span style="color:#a6e22e">c3</span>               xor      al, bl
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">0040120</span><span style="color:#a6e22e">b</span>  d2c0               rol       al, cl
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">0040120</span><span style="color:#a6e22e">d</span>  <span style="color:#ae81ff">2</span>ac1               sub     al, cl
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">0040120</span><span style="color:#a6e22e">f</span>  <span style="color:#ae81ff">880439</span>           mov    <span style="color:#66d9ef">byte</span> [ecx<span style="color:#f92672">+</span>edi], al
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">00401212</span>  <span style="color:#a6e22e">fec1</span>                inc      cl
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">00401214</span>  <span style="color:#a6e22e">ebe8</span>               jmp     <span style="color:#ae81ff">0x4011fe</span>
+</span></span></code></pre></div><p>We see the following algorithm <code>rol((al ^ bl), cl) - cl</code>, so we implement the following python script.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> string
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>alphabet <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">rotl</span>(value, shift, bit_size<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> shift <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> value
+</span></span><span style="display:flex;"><span>    shift <span style="color:#f92672">%=</span> bit_size
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ((value <span style="color:#f92672">&lt;&lt;</span> shift) <span style="color:#f92672">|</span> (value <span style="color:#f92672">&gt;&gt;</span> (bit_size <span style="color:#f92672">-</span> shift))) <span style="color:#f92672">&amp;</span> ((<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> bit_size) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#34;./latin_alphabet.txt.encrypted&#34;</span>, <span style="color:#e6db74">&#34;rb&#34;</span>) <span style="color:#66d9ef">as</span> file:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> file<span style="color:#f92672">.</span>readlines():
+</span></span><span style="display:flex;"><span>        alphabet <span style="color:#f92672">+=</span> line
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>reg_alphabet <span style="color:#f92672">=</span> string<span style="color:#f92672">.</span>ascii_uppercase
+</span></span><span style="display:flex;"><span>final <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">8</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">256</span>):
+</span></span><span style="display:flex;"><span>        c <span style="color:#f92672">=</span> alphabet[x]
+</span></span><span style="display:flex;"><span>        key <span style="color:#f92672">=</span> i
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> rotl((c <span style="color:#f92672">^</span> key), x) <span style="color:#f92672">-</span> x <span style="color:#f92672">==</span> ord(reg_alphabet[x]):
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;FOUND BYTE ! : </span><span style="color:#e6db74">{</span>hex(i)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>            final <span style="color:#f92672">+=</span> i<span style="color:#f92672">.</span>to_bytes()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;FINAL KEY: </span><span style="color:#e6db74">{</span>final<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>This python script will use the <code>latin_alphabet.txt.encrypted</code> file because we can guess the file content.</p>
+
+      </div></div>
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>uint8_t*</span><span> - 2023</span>
+    
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

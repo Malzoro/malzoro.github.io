@@ -33,17 +33,17 @@ We can see a base64 encoded string when running UnlockYourFiles, decoding this b
 
 Analyzing the binary we can see the following logic.
 ```nasm
-004011fe  80f908            cmp   cl, 0x8
-00401201  7d13               jge     0x401216
+cmp   cl, 0x8
+jge     0x401216
 
-00401203  8a1c31          mov    bl, byte [ecx+esi]
-00401206  8a0439          mov    al, byte [ecx+edi]
-00401209  32c3               xor      al, bl
-0040120b  d2c0               rol       al, cl
-0040120d  2ac1               sub     al, cl
-0040120f  880439           mov    byte [ecx+edi], al
-00401212  fec1                inc      cl
-00401214  ebe8               jmp     0x4011fe
+mov    bl, byte [ecx+esi]
+mov    al, byte [ecx+edi]
+xor      al, bl
+rol       al, cl
+sub     al, cl
+mov    byte [ecx+edi], al
+inc      cl
+jmp     0x4011fe
 ```
 
 We see the following algorithm `rol((al ^ bl), cl) - cl`, so we implement the following python script.

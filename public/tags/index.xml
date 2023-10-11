@@ -6,7 +6,37 @@
     <description>Recent content in Tags on uint8_t* blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 26 Sep 2023 20:12:52 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 11 Oct 2023 03:39:48 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>exploitation</title>
+      <link>https://blog.i-eat-sponges.ca/tags/exploitation/</link>
+      <pubDate>Wed, 11 Oct 2023 03:39:48 -0400</pubDate>
+      
+      <guid>https://blog.i-eat-sponges.ca/tags/exploitation/</guid>
+      <description></description>
+      <content></content>
+    </item>
+    
+    <item>
+      <title>races</title>
+      <link>https://blog.i-eat-sponges.ca/tags/races/</link>
+      <pubDate>Wed, 11 Oct 2023 03:39:48 -0400</pubDate>
+      
+      <guid>https://blog.i-eat-sponges.ca/tags/races/</guid>
+      <description></description>
+      <content></content>
+    </item>
+    
+    <item>
+      <title>TOCTOU</title>
+      <link>https://blog.i-eat-sponges.ca/tags/toctou/</link>
+      <pubDate>Wed, 11 Oct 2023 03:39:48 -0400</pubDate>
+      
+      <guid>https://blog.i-eat-sponges.ca/tags/toctou/</guid>
+      <description></description>
+      <content></content>
+    </item>
+    
     <item>
       <title>cracking</title>
       <link>https://blog.i-eat-sponges.ca/tags/cracking/</link>

